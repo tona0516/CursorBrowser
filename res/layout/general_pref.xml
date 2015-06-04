@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gpref" >
 
     <CheckBoxPreference
         android:defaultValue="true"
@@ -17,7 +18,7 @@
         android:inputType="text"
         android:key="homepage"
         android:title="ホームページの設定" />
-
+
     <ListPreference
         android:dialogTitle="変更"
         android:entries="@array/textsize"
