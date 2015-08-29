@@ -36,7 +36,7 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(null);
 		setContentView(R.layout.activity_main);
 		main = this;
-		fragment = new CustomWebViewFragment(null);
+		fragment = new CustomWebViewFragment(this, null);
 		FragmentManager manager = getSupportFragmentManager();
 	    FragmentTransaction transaction = manager.beginTransaction();
 	    transaction.add(R.id.root, fragment, "fragment");

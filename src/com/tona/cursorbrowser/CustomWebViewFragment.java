@@ -60,12 +60,12 @@ public class CustomWebViewFragment extends Fragment {
 	private View mViewLeft, mViewRight, mViewBottom, mViewPointer;
 	private EditText editForm;
 
-	private boolean isCursorEnabled = false;
-	private boolean isScrollMode = false;
-	private boolean isNoShowCursorRange = false;
-	private boolean isShowClickLocation = false;
-	private boolean isEnableJavaScript = true;
-	private boolean isEnableCache = true;
+	private boolean isCursorEnabled ;
+	private boolean isScrollMode;
+	private boolean isNoShowCursorRange;
+	private boolean isShowClickLocation;
+	private boolean isEnableJavaScript;
+	private boolean isEnableCache;
 
 	private SharedPreferences pref;
 	private Cursor cursor;
@@ -76,9 +76,17 @@ public class CustomWebViewFragment extends Fragment {
 
 	private String mUrl = null;
 	private Bundle mWebViewBundle;
+	private MainActivity mainActivity;
 
-	public CustomWebViewFragment(String url) {
+	public CustomWebViewFragment(MainActivity mainActivity, String url) {
+		this.mainActivity = mainActivity;
 		this.mUrl = url;
+		isCursorEnabled = false;
+		isScrollMode = false;
+		isNoShowCursorRange = false;
+		isShowClickLocation = false;
+		isEnableJavaScript = true;
+		isEnableCache = true;
 	}
 
 	@Override
@@ -146,13 +154,13 @@ public class CustomWebViewFragment extends Fragment {
 	}
 
 	private void clickByCursor() {
-		mViewPointer.invalidate();
-		mWebView.setOnTouchListener(null);
-		MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
-		mLayout.dispatchTouchEvent(ev);
-		ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
-		mLayout.dispatchTouchEvent(ev);
-		mWebView.setOnTouchListener(new myOnSetTouchListener());
+			mViewPointer.invalidate();
+			//mWebView.setOnTouchListener(null);
+			MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+10, MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
+			mLayout.dispatchTouchEvent(ev);
+			ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+10, MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
+			mLayout.dispatchTouchEvent(ev);
+			//mWebView.setOnTouchListener(new myOnSetTouchListener());
 	}
 
 	private void switchCursorRnable() {
@@ -237,6 +245,7 @@ public class CustomWebViewFragment extends Fragment {
 				}
 			}
 		});
+
 		mWebView.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
@@ -322,7 +331,6 @@ public class CustomWebViewFragment extends Fragment {
 	class myOnSetTouchListener implements View.OnTouchListener {
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
-
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN :
 					float x = event.getX();
@@ -404,7 +412,7 @@ public class CustomWebViewFragment extends Fragment {
 			}
 		}
 		if (cursor.getOperationRange().equals("bottom")) {
-			if (y > cursor.getDisplaySize().y * 2 / 3 - (mProgressBar.getHeight() + editForm.getHeight()) && y < cursor.getDisplaySize().y) {
+			if (y > cursor.getDisplaySize().y * 2 / 3) {
 				return true;
 			}
 		}
