@@ -3,10 +3,14 @@ package com.tona.cursorbrowser;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,22 +29,25 @@ public class MainActivity extends FragmentActivity {
 	public static final String DEFAULT_HOME = "https://www.google.co.jp/";
 
 	// 画像・キャッシュを保存する際のパス
-	public static final String ROOTPATH = Environment.getExternalStorageDirectory().getPath() + "/MouseBrowser/";
+	public static final String ROOTPATH = Environment.getExternalStorageDirectory().getPath() + "/CursorBrowser/";
 
 	// 他クラスで使用する際のMainActivity変数
 	private MainActivity main;
+
+	private SharedPreferences pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d("LifeCycle", "OnCreate");
 		super.onCreate(null);
+		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		setContentView(R.layout.activity_main);
 		main = this;
 		fragment = new CustomWebViewFragment(this, null);
 		FragmentManager manager = getSupportFragmentManager();
-	    FragmentTransaction transaction = manager.beginTransaction();
-	    transaction.add(R.id.root, fragment, "fragment");
-	    transaction.commit();
+		FragmentTransaction transaction = manager.beginTransaction();
+		transaction.add(R.id.root, fragment, "fragment");
+		transaction.commit();
 	}
 	/**
 	 * メニューの作成
@@ -64,8 +71,29 @@ public class MainActivity extends FragmentActivity {
 		int id = item.getItemId();
 		switch (id) {
 			case R.id.bookmark :
-				Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-				startActivityForResult(intent2, 0);
+				Log.d("nd", ""+pref.getBoolean("bookmark_dialog", true));
+				if (pref.getBoolean("bookmark_dialog", true)) {
+					AlertDialog.Builder alertDlg = new AlertDialog.Builder(MainActivity.this);
+					alertDlg.setTitle("確認");
+					alertDlg.setMessage("ブックマークのアプリケーションを選択してください");
+					alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							pref.edit().putBoolean("bookmark_dialog", false).commit();
+							Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+							startActivityForResult(intent2, 0);
+						}
+					});
+					alertDlg.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+						}
+					});
+					alertDlg.show();
+				} else {
+					Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+					startActivityForResult(intent2, 0);
+				}
 				break;
 			case R.id.bookmark_add :
 				Intent intent = new Intent(Intent.ACTION_INSERT, android.provider.Browser.BOOKMARKS_URI);

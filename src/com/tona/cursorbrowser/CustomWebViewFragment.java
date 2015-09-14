@@ -54,6 +54,7 @@ public class CustomWebViewFragment extends Fragment {
 	private WebView mWebView;
 	private ProgressBar mProgressBar;
 	private RelativeLayout mLayout;
+	private RelativeLayout mTouchPad;
 	private ImageView ivMouseCursor;
 	private ToggleButton btnEnable;
 	private Button btnMenu;
@@ -66,6 +67,7 @@ public class CustomWebViewFragment extends Fragment {
 	private boolean isShowClickLocation;
 	private boolean isEnableJavaScript;
 	private boolean isEnableCache;
+	private boolean isEnablePcView;
 
 	private SharedPreferences pref;
 	private Cursor cursor;
@@ -87,6 +89,7 @@ public class CustomWebViewFragment extends Fragment {
 		isShowClickLocation = false;
 		isEnableJavaScript = true;
 		isEnableCache = true;
+		isEnablePcView = false;
 	}
 
 	@Override
@@ -100,6 +103,7 @@ public class CustomWebViewFragment extends Fragment {
 
 	private void initComponent(View v) {
 		mLayout = (RelativeLayout) v.findViewById(R.id.root_layout);
+		mTouchPad = (RelativeLayout) v.findViewById(R.id.touchpad);
 		mViewLeft = (View) v.findViewById(R.id.view_left);
 		mViewRight = (View) v.findViewById(R.id.view_right);
 		mViewBottom = (View) v.findViewById(R.id.view_bottom);
@@ -155,12 +159,12 @@ public class CustomWebViewFragment extends Fragment {
 
 	private void clickByCursor() {
 			mViewPointer.invalidate();
-			//mWebView.setOnTouchListener(null);
+			mTouchPad.setOnTouchListener(null);
 			MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+10, MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
 			mLayout.dispatchTouchEvent(ev);
 			ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+10, MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
 			mLayout.dispatchTouchEvent(ev);
-			//mWebView.setOnTouchListener(new myOnSetTouchListener());
+			mTouchPad.setOnTouchListener(new myOnSetTouchListener());
 	}
 
 	private void switchCursorRnable() {
@@ -173,7 +177,7 @@ public class CustomWebViewFragment extends Fragment {
 
 	public void turnOnCursor() {
 		mViewPointer.invalidate();
-		mWebView.setOnTouchListener(new myOnSetTouchListener());
+		mTouchPad.setOnTouchListener(new myOnSetTouchListener());
 		isCursorEnabled = true;
 		btnEnable.setText("ON");
 		createCursorImage();
@@ -182,7 +186,7 @@ public class CustomWebViewFragment extends Fragment {
 
 	public void turnOffCursor() {
 		mViewPointer.invalidate();
-		mWebView.setOnTouchListener(null);
+		mTouchPad.setOnTouchListener(null);
 		isCursorEnabled = false;
 		btnEnable.setText("OFF");
 		mLayout.removeView(ivMouseCursor);
@@ -452,6 +456,7 @@ public class CustomWebViewFragment extends Fragment {
 		isEnableJavaScript = pref.getBoolean("enable_javascript", true);
 		mWebView.getSettings().setJavaScriptEnabled(isEnableJavaScript);
 		isEnableCache = pref.getBoolean("enable_cache", true);
+		isEnablePcView = pref.getBoolean("enable_pcview", false);
 		mWebView.getSettings().setAppCacheEnabled(isEnableCache);
 		if (isEnableCache) {
 			mWebView.getSettings().setAppCachePath(MainActivity.ROOTPATH + "cache/");
@@ -460,6 +465,16 @@ public class CustomWebViewFragment extends Fragment {
 		}
 		int textsize = Integer.parseInt(pref.getString("textsize", "100"));
 		mWebView.getSettings().setTextZoom(textsize);
+		if(isEnablePcView){
+			mWebView.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36");
+		}else{
+			mWebView.getSettings().setUserAgentString(mWebView.getSettings().getDefaultUserAgent(getActivity()));
+		}
+		//ピンチズームを有効にする
+		WebSettings ws = mWebView.getSettings();
+		ws.setBuiltInZoomControls(true);
+		ws.setSupportZoom(true);
+		ws.setDisplayZoomControls(false);
 	}
 	@Override
 	public void onStop() {

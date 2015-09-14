@@ -14,6 +14,12 @@
         android:key="enable_cache"
         android:title="キャッシュを有効にする" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:disableDependentsState="true"
+        android:key="enable_pcview"
+        android:title="PC表示にする" />
+
     <EditTextPreference
         android:inputType="text"
         android:key="homepage"
