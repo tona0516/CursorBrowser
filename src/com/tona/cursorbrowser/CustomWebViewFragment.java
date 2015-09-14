@@ -483,6 +483,7 @@ public class CustomWebViewFragment extends Fragment {
 	}
 
 	private void createCursorImage() {
+		mLayout.removeView(ivMouseCursor);
 		ivMouseCursor = new ImageView(getActivity());
 		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.cursor);
 		Bitmap bmp2 = Bitmap.createScaledBitmap(bmp, (int) cursor.getWidth(), (int) cursor.getHeight(), false); // 13:16で調整
