@@ -160,9 +160,9 @@ public class CustomWebViewFragment extends Fragment {
 	private void clickByCursor() {
 			mViewPointer.invalidate();
 			mTouchPad.setOnTouchListener(null);
-			MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+10, MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
+			MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
 			mLayout.dispatchTouchEvent(ev);
-			ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+10, MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
+			ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
 			mLayout.dispatchTouchEvent(ev);
 			mTouchPad.setOnTouchListener(new myOnSetTouchListener());
 	}
@@ -337,11 +337,14 @@ public class CustomWebViewFragment extends Fragment {
 		public boolean onTouch(View view, MotionEvent event) {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN :
+					Log.d("isScrollMode", ""+isScrollMode);
 					float x = event.getX();
 					float y = event.getY();
 					if (!isCursorOperationRange(x, y)) {
 						isScrollMode = true;
 						return false;
+					}else{
+						isScrollMode = false;
 					}
 					downX = event.getX();
 					downY = event.getY();
