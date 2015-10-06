@@ -7,11 +7,13 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="次へ"/>
+    <!--
     <item
         android:id="@+id/set_homepage"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="このページをHPにする"/>
+    -->
     <item
         android:id="@+id/reload"
         android:orderInCategory="100"

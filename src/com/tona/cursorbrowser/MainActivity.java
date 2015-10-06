@@ -70,6 +70,7 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch (id) {
+			/*
 			case R.id.set_homepage :
 				AlertDialog.Builder alertDlg2 = new AlertDialog.Builder(MainActivity.this);
 				alertDlg2.setTitle("以下のページをHPにしますか？");
@@ -88,6 +89,7 @@ public class MainActivity extends FragmentActivity {
 				});
 				alertDlg2.show();
 				break;
+				*/
 			case R.id.bookmark :
 				Log.d("nd", "" + pref.getBoolean("bookmark_dialog", true));
 				if (pref.getBoolean("bookmark_dialog", true)) {
