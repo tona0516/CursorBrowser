@@ -176,7 +176,6 @@ public class CustomWebViewFragment extends Fragment {
 	}
 
 	public void turnOnCursor() {
-		mViewPointer.invalidate();
 		mTouchPad.setOnTouchListener(new myOnSetTouchListener());
 		isCursorEnabled = true;
 		btnEnable.setText("ON");
@@ -216,6 +215,7 @@ public class CustomWebViewFragment extends Fragment {
 				super.onPageStarted(view, url, favicon);
 				Log.d("TAG", "onPageStarted");
 				editForm.setText(url);
+
 			}
 
 			@Override
@@ -223,6 +223,7 @@ public class CustomWebViewFragment extends Fragment {
 				// TODO 自動生成されたメソッド・スタブ
 				super.onPageFinished(view, url);
 				Log.d("TAG", "onPageFniinished");
+				pref.edit().putString("lastPage", url).commit();
 				if (mWebViewBundle != null) {
 					final int x = mWebViewBundle.getInt("x", 0);
 					final int y = mWebViewBundle.getInt("y", 0);

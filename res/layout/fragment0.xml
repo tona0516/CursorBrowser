@@ -19,6 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/form"
+        android:layout_marginTop="-6dp"
+        android:layout_marginBottom="-6dp"
         android:max="100"
         android:progress="0"
         android:visibility="invisible" />
@@ -33,9 +35,9 @@
     </WebView>
 
     <RelativeLayout
+        android:id="@+id/touchpad"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/touchpad" >
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -43,7 +43,7 @@ public class MainActivity extends FragmentActivity {
 		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		setContentView(R.layout.activity_main);
 		main = this;
-		fragment = new CustomWebViewFragment(this, null);
+		fragment = new CustomWebViewFragment(this, pref.getString("lastPage", null));
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.root, fragment, "fragment");
@@ -70,8 +70,26 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch (id) {
+			case R.id.set_homepage :
+				AlertDialog.Builder alertDlg2 = new AlertDialog.Builder(MainActivity.this);
+				alertDlg2.setTitle("以下のページをHPにしますか？");
+				alertDlg2.setMessage(fragment.getWebView().getUrl());
+				alertDlg2.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						pref.edit().putString("homepage", fragment.getWebView().getUrl()).commit();
+						Toast.makeText(getApplicationContext(), "このページをHPにしました", Toast.LENGTH_SHORT).show();
+					}
+				});
+				alertDlg2.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				alertDlg2.show();
+				break;
 			case R.id.bookmark :
-				Log.d("nd", ""+pref.getBoolean("bookmark_dialog", true));
+				Log.d("nd", "" + pref.getBoolean("bookmark_dialog", true));
 				if (pref.getBoolean("bookmark_dialog", true)) {
 					AlertDialog.Builder alertDlg = new AlertDialog.Builder(MainActivity.this);
 					alertDlg.setTitle("確認");
