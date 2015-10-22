@@ -1,28 +1,29 @@
 package com.tona.cursorbrowser;
 
 import android.graphics.Point;
-import android.widget.ImageView;
 
 public class Cursor {
+	public static final float DEFAULT_WIDTH = 39;
+	public static final float DEFAULT_HEIGHT = 48;
+
 	private float x, y;
-	private float downX,downY;
-	private float v;
+	private float downX, downY;
+	private float velocity;
 	private float sizeRate;
 	private float width, height;
 	private Point displaySize;
-	public static final float defalutWidth = 39, defaultHeight = 48;
 	public static float defaultX, defaultY;
-	private String operationRange;
-	private ImageView iv;
+	private String padRange;
+
 	public Cursor(int displayWidth, int displayHeight) {
 		setDisplaySize(new Point(displayWidth, displayHeight));
 		defaultX = displayWidth / 2;
 		defaultY = displayHeight / 2;
 		x = displayWidth / 2;
 		y = displayHeight / 2;
-		setV(1.0f);
-		setWidth(defalutWidth);
-		setHeight(defaultHeight);
+		setVelocity(1.0f);
+		setWidth(DEFAULT_WIDTH);
+		setHeight(DEFAULT_HEIGHT);
 	}
 	public float getX() {
 		return x;
@@ -36,19 +37,19 @@ public class Cursor {
 	public void setY(float y) {
 		this.y = y;
 	}
-	public float getV() {
-		return v;
+	public float getVelocity() {
+		return velocity;
 	}
-	public void setV(float v) {
-		this.v = v;
+	public void setVelocity(float v) {
+		this.velocity = v;
 	}
 	public double getSizeRate() {
 		return sizeRate;
 	}
 	public void setSizeRate(float sizeRate) {
 		this.sizeRate = sizeRate;
-		setWidth(defalutWidth * sizeRate);
-		setHeight(defaultHeight * sizeRate);
+		setWidth(DEFAULT_WIDTH * sizeRate);
+		setHeight(DEFAULT_HEIGHT * sizeRate);
 	}
 	public float getWidth() {
 		return width;
@@ -81,9 +82,9 @@ public class Cursor {
 		this.downY = downY;
 	}
 	public String getOperationRange() {
-		return operationRange;
+		return padRange;
 	}
 	public void setOperationRange(String operationrange) {
-		operationRange = operationrange;
+		padRange = operationrange;
 	}
 }

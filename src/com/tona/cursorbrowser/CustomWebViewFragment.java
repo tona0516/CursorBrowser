@@ -152,7 +152,7 @@ public class CustomWebViewFragment extends Fragment {
 		btnEnable.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				switchCursorRnable();
+				switchCursorEnable();
 			}
 		});
 	}
@@ -167,7 +167,7 @@ public class CustomWebViewFragment extends Fragment {
 			mTouchPad.setOnTouchListener(new myOnSetTouchListener());
 	}
 
-	private void switchCursorRnable() {
+	private void switchCursorEnable() {
 		if (!isCursorEnabled) {
 			turnOnCursor();
 		} else {
@@ -355,8 +355,8 @@ public class CustomWebViewFragment extends Fragment {
 				case MotionEvent.ACTION_MOVE :
 					if (isScrollMode)
 						return false;
-					float newX = (cursor.getDownX() - (downX - event.getX()) * cursor.getV());
-					float newY = (cursor.getDownY() - (downY - event.getY()) * cursor.getV());
+					float newX = (cursor.getDownX() - (downX - event.getX()) * cursor.getVelocity());
+					float newY = (cursor.getDownY() - (downY - event.getY()) * cursor.getVelocity());
 					cursor.setX(newX);
 					cursor.setY(newY);
 					ivMouseCursor.setX(newX);
@@ -452,7 +452,7 @@ public class CustomWebViewFragment extends Fragment {
 	}
 
 	private void readPreference() {
-		cursor.setV(Float.parseFloat(pref.getString("velocity", "1.0")));
+		cursor.setVelocity(Float.parseFloat(pref.getString("velocity", "1.0")));
 		cursor.setSizeRate(Float.parseFloat(pref.getString("size_rate", "1.0")));
 		cursor.setOperationRange(pref.getString("range", "bottom"));
 		isNoShowCursorRange = pref.getBoolean("view_cursor_range", false);
@@ -472,7 +472,7 @@ public class CustomWebViewFragment extends Fragment {
 		if(isEnablePcView){
 			mWebView.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36");
 		}else{
-			mWebView.getSettings().setUserAgentString(mWebView.getSettings().getDefaultUserAgent(getActivity()));
+			mWebView.getSettings().setUserAgentString(mWebView.getSettings().getUserAgentString());
 		}
 		//ピンチズームを有効にする
 		WebSettings ws = mWebView.getSettings();
