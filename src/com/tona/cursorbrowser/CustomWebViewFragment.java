@@ -61,7 +61,7 @@ public class CustomWebViewFragment extends Fragment {
 	private View mViewLeft, mViewRight, mViewBottom, mViewPointer;
 	private EditText editForm;
 
-	private boolean isCursorEnabled ;
+	private boolean isCursorEnabled;
 	private boolean isScrollMode;
 	private boolean isNoShowCursorRange;
 	private boolean isShowClickLocation;
@@ -158,13 +158,13 @@ public class CustomWebViewFragment extends Fragment {
 	}
 
 	private void clickByCursor() {
-			mViewPointer.invalidate();
-			mTouchPad.setOnTouchListener(null);
-			MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
-			mLayout.dispatchTouchEvent(ev);
-			ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
-			mLayout.dispatchTouchEvent(ev);
-			mTouchPad.setOnTouchListener(new myOnSetTouchListener());
+		mViewPointer.invalidate();
+		mTouchPad.setOnTouchListener(null);
+		MotionEvent ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, cursor.getX(), cursor.getY(), 0);
+		mLayout.dispatchTouchEvent(ev);
+		ev = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, cursor.getX(), cursor.getY(), 0);
+		mLayout.dispatchTouchEvent(ev);
+		mTouchPad.setOnTouchListener(new myOnSetTouchListener());
 	}
 
 	private void switchCursorEnable() {
@@ -222,7 +222,7 @@ public class CustomWebViewFragment extends Fragment {
 			public void onPageFinished(WebView view, String url) {
 				// TODO 自動生成されたメソッド・スタブ
 				super.onPageFinished(view, url);
-				Log.d("TAG", "onPageFniinished");
+				Log.d("TAG", "onPageFinished");
 				pref.edit().putString("lastPage", url).commit();
 				if (mWebViewBundle != null) {
 					final int x = mWebViewBundle.getInt("x", 0);
@@ -338,13 +338,13 @@ public class CustomWebViewFragment extends Fragment {
 		public boolean onTouch(View view, MotionEvent event) {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN :
-					Log.d("isScrollMode", ""+isScrollMode);
+					Log.d("isScrollMode", "" + isScrollMode);
 					float x = event.getX();
 					float y = event.getY();
 					if (!isCursorOperationRange(x, y)) {
 						isScrollMode = true;
 						return false;
-					}else{
+					} else {
 						isScrollMode = false;
 					}
 					downX = event.getX();
@@ -469,12 +469,12 @@ public class CustomWebViewFragment extends Fragment {
 		}
 		int textsize = Integer.parseInt(pref.getString("textsize", "100"));
 		mWebView.getSettings().setTextZoom(textsize);
-		if(isEnablePcView){
+		if (isEnablePcView) {
 			mWebView.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36");
-		}else{
+		} else {
 			mWebView.getSettings().setUserAgentString(mWebView.getSettings().getUserAgentString());
 		}
-		//ピンチズームを有効にする
+		// ピンチズームを有効にする
 		WebSettings ws = mWebView.getSettings();
 		ws.setBuiltInZoomControls(true);
 		ws.setSupportZoom(true);
