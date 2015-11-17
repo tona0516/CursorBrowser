@@ -77,7 +77,6 @@ public class CustomWebViewFragment extends Fragment {
 	private final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
 
 	private String mUrl = null;
-	private Bundle mWebViewBundle;
 	private MainActivity mainActivity;
 
 	public CustomWebViewFragment(MainActivity mainActivity, String url) {
@@ -215,28 +214,21 @@ public class CustomWebViewFragment extends Fragment {
 				super.onPageStarted(view, url, favicon);
 				Log.d("TAG", "onPageStarted");
 				editForm.setText(url);
-
+				if (!mainActivity.historySaver.isNotMove()) {
+					Log.d("onPageFinished", "add");
+					mainActivity.historySaver.move(url, mWebView.getScrollX(), mWebView.getScrollY());
+				} else {
+					Log.d("onPageFinished", "not add");
+					mainActivity.historySaver.setNotMove(false);
+				}
 			}
 
 			@Override
 			public void onPageFinished(WebView view, String url) {
-				// TODO 自動生成されたメソッド・スタブ
 				super.onPageFinished(view, url);
 				Log.d("TAG", "onPageFinished");
-				pref.edit().putString("lastPage", url).commit();
-				if (mWebViewBundle != null) {
-					final int x = mWebViewBundle.getInt("x", 0);
-					final int y = mWebViewBundle.getInt("y", 0);
-					Log.d("TAG", x + "," + y);
-					mWebView.post(new Runnable() {
-						@Override
-						public void run() {
-							mWebView.scrollTo(x, y);
-							Log.d("TAG", "scroll");
-						}
-					});
-				}
 			}
+
 		});
 		mWebView.setWebChromeClient(new WebChromeClient() {
 			@Override
@@ -327,11 +319,7 @@ public class CustomWebViewFragment extends Fragment {
 				return false;
 			}
 		});
-		if (mUrl != null) {
-			mWebView.loadUrl(mUrl);
-		} else {
-			mWebView.loadUrl(pref.getString("homepage", MainActivity.DEFAULT_HOME));
-		}
+		mWebView.loadUrl(mUrl);
 	}
 	class myOnSetTouchListener implements View.OnTouchListener {
 		@Override
@@ -431,9 +419,7 @@ public class CustomWebViewFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		Log.d("LifeCycle", "onResume");
-		if (mWebViewBundle != null) {
-			mWebView.restoreState(mWebViewBundle);
-		}
+
 		Point p = getWindowSize();
 		cursor = new Cursor(p.x, p.y);
 		mViewBottom.setY(cursor.getDisplaySize().y * 2 / 3);

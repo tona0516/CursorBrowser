@@ -44,11 +44,12 @@ public class GeneralPref extends PreferenceActivity {
 
 	private void loadAdvertisements() {
 		final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
+		final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
 		AdView adView = new AdView(this);
 		adView.setAdUnitId("ca-app-pub-4176998183155624/6476838791"); // 注1
 		adView.setAdSize(AdSize.BANNER);
 		RelativeLayout layout_ad = new RelativeLayout(this);
-		RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(WC, WC);
+		RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(MP, WC);
 		param.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
 		param.addRule(RelativeLayout.CENTER_HORIZONTAL, 2);
 		layout_ad.addView(adView, param);

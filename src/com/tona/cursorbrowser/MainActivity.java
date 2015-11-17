@@ -36,14 +36,25 @@ public class MainActivity extends FragmentActivity {
 
 	private SharedPreferences pref;
 
+	public HistorySaver historySaver;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.d("LifeCycle", "OnCreate");
 		super.onCreate(null);
-		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		setContentView(R.layout.activity_main);
+		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		main = this;
-		fragment = new CustomWebViewFragment(this, pref.getString("lastPage", null));
+
+		historySaver = new HistorySaver();
+		String lastUrl;
+		if (historySaver.restoreFromFile()) {
+			lastUrl = historySaver.getCurrentURL();
+			historySaver.setNotMove(true);
+		} else {
+			lastUrl = DEFAULT_HOME;
+		}
+
+		fragment = new CustomWebViewFragment(this, lastUrl);
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.root, fragment, "fragment");
@@ -70,25 +81,24 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch (id) {
-			/*
-			 * case R.id.set_homepage : AlertDialog.Builder alertDlg2 = new
-			 * AlertDialog.Builder(MainActivity.this);
-			 * alertDlg2.setTitle("以下のページをHPにしますか？");
-			 * alertDlg2.setMessage(fragment.getWebView().getUrl());
-			 * alertDlg2.setPositiveButton("Yes", new
-			 * DialogInterface.OnClickListener() {
-			 *
-			 * @Override public void onClick(DialogInterface dialog, int which)
-			 * { pref.edit().putString("homepage",
-			 * fragment.getWebView().getUrl()).commit();
-			 * Toast.makeText(getApplicationContext(), "このページをHPにしました",
-			 * Toast.LENGTH_SHORT).show(); } });
-			 * alertDlg2.setNegativeButton("No", new
-			 * DialogInterface.OnClickListener() {
-			 *
-			 * @Override public void onClick(DialogInterface dialog, int which)
-			 * { } }); alertDlg2.show(); break;
-			 */
+		/*
+		 * case R.id.set_homepage : AlertDialog.Builder alertDlg2 = new
+		 * AlertDialog.Builder(MainActivity.this);
+		 * alertDlg2.setTitle("以下のページをHPにしますか？");
+		 * alertDlg2.setMessage(fragment.getWebView().getUrl());
+		 * alertDlg2.setPositiveButton("Yes", new
+		 * DialogInterface.OnClickListener() {
+		 *
+		 * @Override public void onClick(DialogInterface dialog, int which) {
+		 * pref.edit().putString("homepage",
+		 * fragment.getWebView().getUrl()).commit();
+		 * Toast.makeText(getApplicationContext(), "このページをHPにしました",
+		 * Toast.LENGTH_SHORT).show(); } }); alertDlg2.setNegativeButton("No",
+		 * new DialogInterface.OnClickListener() {
+		 *
+		 * @Override public void onClick(DialogInterface dialog, int which) { }
+		 * }); alertDlg2.show(); break;
+		 */
 			case R.id.bookmark :
 				Log.d("nd", "" + pref.getBoolean("bookmark_dialog", true));
 				if (pref.getBoolean("bookmark_dialog", true)) {
@@ -121,8 +131,21 @@ public class MainActivity extends FragmentActivity {
 				startActivity(intent);
 				break;
 			case R.id.next :
-				if (fragment.getWebView().canGoForward())
-					fragment.getWebView().goForward();
+				if (historySaver.canGoNext()) {
+					historySaver.next();
+					historySaver.setNotMove(true);
+					/*
+					 * String url =
+					 * fragment.getWebView().copyBackForwardList().getItemAtIndex
+					 * (
+					 * fragment.getWebView().copyBackForwardList().getCurrentIndex
+					 * ()+1).getUrl(); if (fragment.getWebView().canGoForward()
+					 * && url.equals(historySaver.getCurrentURL())) {
+					 * fragment.getWebView().goForward(); }else{
+					 */
+					fragment.getWebView().loadUrl(historySaver.getCurrentURL());
+					// }
+				}
 				break;
 			case R.id.reload :
 				fragment.getWebView().reload();
@@ -184,8 +207,19 @@ public class MainActivity extends FragmentActivity {
 	 */
 	@Override
 	public void onBackPressed() {
-		if (fragment.getWebView().canGoBack()) {
-			fragment.getWebView().goBack();
+		if (historySaver.canGoBack()) {
+			historySaver.back();
+			historySaver.setNotMove(true);
+			/*
+			 * String url =
+			 * fragment.getWebView().copyBackForwardList().getItemAtIndex
+			 * (fragment.getWebView().copyBackForwardList().getCurrentIndex() -
+			 * 1).getUrl(); if (fragment.getWebView().canGoBack() &&
+			 * url.equals(historySaver.getCurrentURL())) {
+			 * fragment.getWebView().goBack(); } else {
+			 */
+			fragment.getWebView().loadUrl(historySaver.getCurrentURL());
+			// }
 		} else {
 			finish();
 		}
