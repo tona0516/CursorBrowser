@@ -5,4 +5,37 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- menu string -->
+    <string name="next">Next</string>
+    <string name="reload">Reload</string>
+    <string name="general_setting">General settings</string>
+    <string name="cursor_setting">Cursor settings</string>
+    <string name="search">Search</string>
+    <string name="bookmark">Bookmarks</string>
+    <string name="add_bookmark">Add bookmark</string>
+
+    <!-- general settings -->
+    <string name="javascript">Enable JavaScript</string>
+    <string name="cache">Enable cache</string>
+    <string name="pc_view">Enable PC view</string>
+    <string name="homepage">Homepage Setting</string>
+    <string name="change">Change</string>
+    <string name="textsize">Text size</string>
+
+    <!-- cursor settings -->
+    <string name="cursor_size_rate">Cursor size rate</string>
+    <string name="cursor_speed_rate">Cursor speed</string>
+    <string name="cursor_operation_range">Cursor oparation range</string>
+    <string name="visualize_cursor_operation_range">Visualize cursor operation range</string>
+    <string name="visualize_click_position">Visualize click position</string>
+
+    <!-- activity string -->
+    <string name="picture">Picture</string>
+    <string name="comfirmation_picture">Do you want to save the picture?</string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="comfirm">Comfirm</string>
+    <string name="select_app">Select the bookmark aplication</string>
+    <string name="saved">Saved</string>
+    <string name="failed">Failed</string>
+
 </resources>

@@ -1,5 +1,9 @@
 package com.tona.cursorbrowser;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -10,10 +14,6 @@ import android.preference.PreferenceManager;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 
 public class GeneralPref extends PreferenceActivity {
 	/** Called when the activity is first created. */
@@ -35,7 +35,7 @@ public class GeneralPref extends PreferenceActivity {
 				if (text.startsWith("http://") || text.startsWith("https://")) {
 					sp.edit().putString("homepage", text).commit();
 				} else {
-					Toast.makeText(getApplicationContext(), "不正なURLです", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), getString(R.string.invalid_url), Toast.LENGTH_SHORT).show();
 				}
 				return false;
 			}

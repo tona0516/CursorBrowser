@@ -251,8 +251,8 @@ public class CustomWebViewFragment extends Fragment {
 				switch (htr.getType()) {
 					case HitTestResult.IMAGE_TYPE :
 						AlertDialog.Builder alertDlg = new AlertDialog.Builder(getActivity());
-						alertDlg.setTitle("画像");
-						alertDlg.setMessage("保存しますか？");
+						alertDlg.setTitle(getString(R.string.picture));
+						alertDlg.setMessage(getString(R.string.comfirmation_picture));
 						alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
@@ -297,9 +297,9 @@ public class CustomWebViewFragment extends Fragment {
 
 									protected void onPostExecute(Boolean result) {
 										if (result)
-											Toast.makeText(getActivity(), "保存しました", Toast.LENGTH_SHORT).show();
+											Toast.makeText(getActivity(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
 										else
-											Toast.makeText(getActivity(), "失敗しました", Toast.LENGTH_SHORT).show();
+											Toast.makeText(getActivity(), getString(R.string.failed), Toast.LENGTH_SHORT).show();
 									};
 								};
 								task.execute();

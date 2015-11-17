@@ -6,43 +6,36 @@
         android:id="@+id/next"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="次へ"/>
-    <!--
-    <item
-        android:id="@+id/set_homepage"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="このページをHPにする"/>
-    -->
+        android:title="@string/next"/>
     <item
         android:id="@+id/reload"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="更新"/>
+        android:title="@string/reload"/>
     <item
         android:id="@+id/general_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="一般設定"/>
+        android:title="@string/general_setting"/>
     <item
         android:id="@+id/cursor_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="カーソル設定"/>
+        android:title="@string/cursor_setting"/>
     <item
         android:id="@+id/url_bar"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="検索"/>
+        android:title="@string/search"/>
     <item
         android:id="@+id/bookmark"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="ブックマーク一覧"/>
+        android:title="@string/bookmark"/>
     <item
         android:id="@+id/bookmark_add"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="ブックマーク登録"/>
+        android:title="@string/add_bookmark"/>
 
 </menu>

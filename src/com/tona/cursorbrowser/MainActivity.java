@@ -1,5 +1,6 @@
 package com.tona.cursorbrowser;
 
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -19,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebBackForwardList;
 import android.widget.EditText;
 import android.widget.Toast;
 public class MainActivity extends FragmentActivity {
@@ -41,6 +45,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(null);
+		setLanguage();
 		setContentView(R.layout.activity_main);
 		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		main = this;
@@ -59,6 +64,20 @@ public class MainActivity extends FragmentActivity {
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.add(R.id.root, fragment, "fragment");
 		transaction.commit();
+	}
+
+	private void setLanguage() {
+		Locale locale = Locale.getDefault(); // アプリで使用されているロケール情報を取得
+		if (locale.equals(Locale.JAPAN)) {
+			locale = Locale.JAPAN;
+		} else {
+			locale = Locale.US;
+		}
+		Locale.setDefault(locale); // 新しいロケールを設定
+		Configuration config = new Configuration();
+		config.locale = locale; // Resourcesに対するロケールを設定
+		Resources resources = getBaseContext().getResources();
+		resources.updateConfiguration(config, null);
 	}
 	/**
 	 * メニューの作成
@@ -81,30 +100,12 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch (id) {
-		/*
-		 * case R.id.set_homepage : AlertDialog.Builder alertDlg2 = new
-		 * AlertDialog.Builder(MainActivity.this);
-		 * alertDlg2.setTitle("以下のページをHPにしますか？");
-		 * alertDlg2.setMessage(fragment.getWebView().getUrl());
-		 * alertDlg2.setPositiveButton("Yes", new
-		 * DialogInterface.OnClickListener() {
-		 *
-		 * @Override public void onClick(DialogInterface dialog, int which) {
-		 * pref.edit().putString("homepage",
-		 * fragment.getWebView().getUrl()).commit();
-		 * Toast.makeText(getApplicationContext(), "このページをHPにしました",
-		 * Toast.LENGTH_SHORT).show(); } }); alertDlg2.setNegativeButton("No",
-		 * new DialogInterface.OnClickListener() {
-		 *
-		 * @Override public void onClick(DialogInterface dialog, int which) { }
-		 * }); alertDlg2.show(); break;
-		 */
 			case R.id.bookmark :
 				Log.d("nd", "" + pref.getBoolean("bookmark_dialog", true));
 				if (pref.getBoolean("bookmark_dialog", true)) {
 					AlertDialog.Builder alertDlg = new AlertDialog.Builder(MainActivity.this);
-					alertDlg.setTitle("確認");
-					alertDlg.setMessage("ブックマークのアプリケーションを選択してください");
+					alertDlg.setTitle(getString(R.string.comfirm));
+					alertDlg.setMessage(getString(R.string.select_app));
 					alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -134,20 +135,21 @@ public class MainActivity extends FragmentActivity {
 				if (historySaver.canGoNext()) {
 					historySaver.next();
 					historySaver.setNotMove(true);
-					/*
-					 * String url =
-					 * fragment.getWebView().copyBackForwardList().getItemAtIndex
-					 * (
-					 * fragment.getWebView().copyBackForwardList().getCurrentIndex
-					 * ()+1).getUrl(); if (fragment.getWebView().canGoForward()
-					 * && url.equals(historySaver.getCurrentURL())) {
-					 * fragment.getWebView().goForward(); }else{
-					 */
-					fragment.getWebView().loadUrl(historySaver.getCurrentURL());
-					// }
+					try {
+						WebBackForwardList list = fragment.getWebView().copyBackForwardList();
+						String url = list.getItemAtIndex(list.getCurrentIndex() + 1).getUrl();
+						if (fragment.getWebView().canGoBack() && url.equals(historySaver.getCurrentURL())) {
+							fragment.getWebView().goForward();
+						} else {
+							fragment.getWebView().loadUrl(historySaver.getCurrentURL());
+						}
+					} catch (NullPointerException e) {
+						fragment.getWebView().loadUrl(historySaver.getCurrentURL());
+					}
 				}
 				break;
 			case R.id.reload :
+				historySaver.setNotMove(true);
 				fragment.getWebView().reload();
 				break;
 			case R.id.general_settings :
@@ -197,7 +199,7 @@ public class MainActivity extends FragmentActivity {
 			if (uri.startsWith("http://") || uri.startsWith("https://")) {
 				fragment.getWebView().loadUrl(uri);
 			} else {
-				Toast.makeText(main, "不正なURLです", Toast.LENGTH_SHORT).show();
+				Toast.makeText(main, getString(R.string.invalid_url), Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -210,16 +212,18 @@ public class MainActivity extends FragmentActivity {
 		if (historySaver.canGoBack()) {
 			historySaver.back();
 			historySaver.setNotMove(true);
-			/*
-			 * String url =
-			 * fragment.getWebView().copyBackForwardList().getItemAtIndex
-			 * (fragment.getWebView().copyBackForwardList().getCurrentIndex() -
-			 * 1).getUrl(); if (fragment.getWebView().canGoBack() &&
-			 * url.equals(historySaver.getCurrentURL())) {
-			 * fragment.getWebView().goBack(); } else {
-			 */
-			fragment.getWebView().loadUrl(historySaver.getCurrentURL());
-			// }
+			try {
+				WebBackForwardList list = fragment.getWebView().copyBackForwardList();
+				String url = list.getItemAtIndex(list.getCurrentIndex() - 1).getUrl();
+				if (fragment.getWebView().canGoBack() && url.equals(historySaver.getCurrentURL())) {
+					fragment.getWebView().goBack();
+				} else {
+					fragment.getWebView().loadUrl(historySaver.getCurrentURL());
+				}
+			} catch (NullPointerException e) {
+				fragment.getWebView().loadUrl(historySaver.getCurrentURL());
+			}
+
 		} else {
 			finish();
 		}

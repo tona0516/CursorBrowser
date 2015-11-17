@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CursorBrowser</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- menu string -->
+    <string name="next">次へ</string>
+    <string name="reload">更新</string>
+    <string name="general_setting">一般設定</string>
+    <string name="cursor_setting">カーソル設定</string>
+    <string name="search">検索</string>
+    <string name="bookmark">ブックマーク一覧</string>
+    <string name="add_bookmark">ブックマーク追加</string>
+
+    <!-- general settings -->
+    <string name="javascript">JavaScriptを有効にする</string>
+    <string name="cache">キャッシュを有効にする</string>
+    <string name="pc_view">PC表示を有効にする</string>
+    <string name="homepage">ホームページ設定</string>
+    <string name="change">変更</string>
+    <string name="textsize">文字サイズ</string>
+
+    <!-- cursor settings -->
+    <string name="cursor_size_rate">カーソルサイズ</string>
+    <string name="cursor_speed_rate">操作速度</string>
+    <string name="cursor_operation_range">操作範囲</string>
+    <string name="visualize_cursor_operation_range">操作範囲を可視化する</string>
+    <string name="visualize_click_position">クリック位置を可視化する</string>
+
+    <!-- activity string -->
+    <string name="picture">画像</string>
+    <string name="comfirmation_picture">画像を保存しますか？</string>
+    <string name="invalid_url">不正なURLです</string>
+    <string name="comfirm">確認</string>
+    <string name="select_app">ブックマークアプリケーションを選択して下さい</string>
+    <string name="saved">保存しました</string>
+    <string name="failed">失敗しました</string>
+
+</resources>
