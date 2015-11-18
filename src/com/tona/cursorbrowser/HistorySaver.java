@@ -102,6 +102,13 @@ public class HistorySaver implements Serializable {
 		return true;
 	}
 
+	public void deleteFile() {
+		File file = new File(MainActivity.ROOTPATH + TAG);
+		if (file.exists()) {
+			file.delete();
+		}
+	}
+
 	public LinkedList<String> getUrlList() {
 		return urlList;
 	}

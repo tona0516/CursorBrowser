@@ -56,7 +56,7 @@ public class MainActivity extends FragmentActivity {
 			lastUrl = historySaver.getCurrentURL();
 			historySaver.setNotMove(true);
 		} else {
-			lastUrl = DEFAULT_HOME;
+			lastUrl = pref.getString("homepage", DEFAULT_HOME);
 		}
 
 		fragment = new CustomWebViewFragment(this, lastUrl);
@@ -223,8 +223,8 @@ public class MainActivity extends FragmentActivity {
 			} catch (NullPointerException e) {
 				fragment.getWebView().loadUrl(historySaver.getCurrentURL());
 			}
-
 		} else {
+			historySaver.deleteFile();
 			finish();
 		}
 		return;

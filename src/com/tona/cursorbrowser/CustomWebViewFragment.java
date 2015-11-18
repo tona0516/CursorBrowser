@@ -80,8 +80,6 @@ public class CustomWebViewFragment extends Fragment {
 	private String mUrl = null;
 	private MainActivity mainActivity;
 
-	private String mFailingUrl;
-
 	public CustomWebViewFragment(MainActivity mainActivity, String url) {
 		this.mainActivity = mainActivity;
 		this.mUrl = url;
