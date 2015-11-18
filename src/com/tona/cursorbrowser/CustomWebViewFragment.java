@@ -129,6 +129,7 @@ public class CustomWebViewFragment extends Fragment {
 					inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 					// 検索処理的
 					String str = editForm.getText().toString();
+					mainActivity.historySaver.setNotMove(true); // 何故か2回onPageStartedが呼ばれるため応急措置
 					if (str.startsWith("http://") || str.startsWith("https://")) {
 						mWebView.loadUrl(editForm.getText().toString());
 					} else {
@@ -220,7 +221,7 @@ public class CustomWebViewFragment extends Fragment {
 				} else {
 					if (!mainActivity.historySaver.isNotMove()) {
 						Log.d("onPageStarted", "add");
-						mainActivity.historySaver.move(url, mWebView.getScrollX(), mWebView.getScrollY());
+						mainActivity.historySaver.move(url);
 					} else {
 						Log.d("onPageStarted", "not add");
 						mainActivity.historySaver.setNotMove(false);

@@ -23,7 +23,8 @@ public class HistorySaver implements Serializable {
 		isNotMove = false;
 	}
 
-	public void move(String url, int x, int y) {
+	public void move(String url) {
+		Log.d(TAG, "move");
 		if (currentIndex != urlList.size() - 1) {
 			int size = urlList.size();
 			for (int i = currentIndex + 1; i < size; i++) {
@@ -37,6 +38,7 @@ public class HistorySaver implements Serializable {
 	}
 
 	public void back() {
+		Log.d(TAG, "back");
 		if (currentIndex - 1 >= 0) {
 			currentIndex--;
 			saveToFile();
@@ -52,6 +54,7 @@ public class HistorySaver implements Serializable {
 	}
 
 	public void next() {
+		Log.d(TAG, "next");
 		if (currentIndex + 1 <= urlList.size() - 1) {
 			currentIndex++;
 			saveToFile();
