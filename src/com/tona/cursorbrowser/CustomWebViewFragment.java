@@ -79,6 +79,8 @@ public class CustomWebViewFragment extends Fragment {
 	private String mUrl = null;
 	private MainActivity mainActivity;
 
+	private String mFailingUrl;
+
 	public CustomWebViewFragment(MainActivity mainActivity, String url) {
 		this.mainActivity = mainActivity;
 		this.mUrl = url;
@@ -212,21 +214,23 @@ public class CustomWebViewFragment extends Fragment {
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
 				super.onPageStarted(view, url, favicon);
-				Log.d("TAG", "onPageStarted");
 				editForm.setText(url);
-				if (!mainActivity.historySaver.isNotMove()) {
-					Log.d("onPageFinished", "add");
-					mainActivity.historySaver.move(url, mWebView.getScrollX(), mWebView.getScrollY());
+				if (url.equals(mFailingUrl)) {
+					mFailingUrl = null;
 				} else {
-					Log.d("onPageFinished", "not add");
-					mainActivity.historySaver.setNotMove(false);
+					if (!mainActivity.historySaver.isNotMove()) {
+						Log.d("onPageStarted", "add");
+						mainActivity.historySaver.move(url, mWebView.getScrollX(), mWebView.getScrollY());
+					} else {
+						Log.d("onPageStarted", "not add");
+						mainActivity.historySaver.setNotMove(false);
+					}
 				}
 			}
-
 			@Override
-			public void onPageFinished(WebView view, String url) {
-				super.onPageFinished(view, url);
-				Log.d("TAG", "onPageFinished");
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+				super.onReceivedError(view, errorCode, description, failingUrl);
+				mFailingUrl = failingUrl;
 			}
 
 		});
