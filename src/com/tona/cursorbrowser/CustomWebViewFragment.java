@@ -7,7 +7,6 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -212,9 +211,8 @@ public class CustomWebViewFragment extends Fragment {
 
 		mWebView.setWebViewClient(new WebViewClient() {
 			@Override
-			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-				super.onPageStarted(view, url, favicon);
-				Log.d(this.getClass().getName(), "onPageStarted");
+			public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+				super.doUpdateVisitedHistory(view, url, isReload);
 				editForm.setText(url);
 				if (!mainActivity.historySaver.isNotMove()) {
 					Log.d("onPageStarted", "add");
@@ -224,19 +222,8 @@ public class CustomWebViewFragment extends Fragment {
 					mainActivity.historySaver.setNotMove(false);
 				}
 			}
-
-			/**
-			 * リダイレクトを検知してリダイレクト元のURLをリストから削除する
-			 */
-			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				Log.d(this.getClass().getName(), "shouldOverrideUrlLoading");
-				LinkedList<String> list = mainActivity.historySaver.getUrlList();
-				list.remove(list.size() - 2);
-				mainActivity.historySaver.back();
-				return super.shouldOverrideUrlLoading(view, url);
-			}
 		});
+
 		mWebView.setWebChromeClient(new WebChromeClient() {
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {

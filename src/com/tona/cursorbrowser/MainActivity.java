@@ -1,5 +1,6 @@
 package com.tona.cursorbrowser;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,6 +50,14 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		main = this;
+
+		if(pref.getBoolean("versionInitialize", true)){
+			File historyFile = new File(ROOTPATH + "HistorySaver");
+			if(historyFile.exists()){
+				historyFile.delete();
+				pref.edit().putBoolean("versionInitialize", false).commit();
+			}
+		}
 
 		historySaver = new HistorySaver();
 		String lastUrl;
@@ -195,7 +204,7 @@ public class MainActivity extends FragmentActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			Intent intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
-			String uri = intent.toURI();
+			String uri = intent.getDataString();
 			if (uri.startsWith("http://") || uri.startsWith("https://")) {
 				fragment.getWebView().loadUrl(uri);
 			} else {
