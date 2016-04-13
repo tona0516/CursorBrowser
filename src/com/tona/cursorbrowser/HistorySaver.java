@@ -18,7 +18,7 @@ public class HistorySaver implements Serializable {
 	private boolean isNotMove;
 
 	public HistorySaver() {
-		urlList = new LinkedList<>();
+		urlList = new LinkedList<String>();
 		currentIndex = -1;
 		isNotMove = false;
 	}

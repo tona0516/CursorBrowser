@@ -5,9 +5,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -18,7 +16,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,9 +48,9 @@ public class MainActivity extends FragmentActivity {
 		pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		main = this;
 
-		if(pref.getBoolean("versionInitialize", true)){
+		if (pref.getBoolean("versionInitialize", true)) {
 			File historyFile = new File(ROOTPATH + "HistorySaver");
-			if(historyFile.exists()){
+			if (historyFile.exists()) {
 				historyFile.delete();
 				pref.edit().putBoolean("versionInitialize", false).commit();
 			}
@@ -110,35 +107,38 @@ public class MainActivity extends FragmentActivity {
 		int id = item.getItemId();
 		switch (id) {
 			case R.id.bookmark :
-				Log.d("nd", "" + pref.getBoolean("bookmark_dialog", true));
-				if (pref.getBoolean("bookmark_dialog", true)) {
-					AlertDialog.Builder alertDlg = new AlertDialog.Builder(MainActivity.this);
-					alertDlg.setTitle(getString(R.string.comfirm));
-					alertDlg.setMessage(getString(R.string.select_app));
-					alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							pref.edit().putBoolean("bookmark_dialog", false).commit();
-							Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-							startActivityForResult(intent2, 0);
-						}
-					});
-					alertDlg.setNegativeButton("No", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-						}
-					});
-					alertDlg.show();
-				} else {
-					Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-					startActivityForResult(intent2, 0);
-				}
+//				Log.d("nd", "" + pref.getBoolean("bookmark_dialog", true));
+//				if (pref.getBoolean("bookmark_dialog", true)) {
+//					AlertDialog.Builder alertDlg = new AlertDialog.Builder(MainActivity.this);
+//					alertDlg.setTitle(getString(R.string.comfirm));
+//					alertDlg.setMessage(getString(R.string.select_app));
+//					alertDlg.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//						@Override
+//						public void onClick(DialogInterface dialog, int which) {
+//							pref.edit().putBoolean("bookmark_dialog", false).commit();
+//							Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+//							startActivityForResult(intent2, 0);
+//						}
+//					});
+//					alertDlg.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//						@Override
+//						public void onClick(DialogInterface dialog, int which) {
+//						}
+//					});
+//					alertDlg.show();
+//				} else {
+//					Intent intent2 = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+//					startActivityForResult(intent2, 0);
+//				}
+				Intent intent2 = new Intent();
+				intent2.setAction(Intent.ACTION_CREATE_SHORTCUT);
+				startActivityForResult(intent2, 0);
 				break;
 			case R.id.bookmark_add :
-				Intent intent = new Intent(Intent.ACTION_INSERT, android.provider.Browser.BOOKMARKS_URI);
-				intent.putExtra("title", fragment.getWebView().getTitle());
-				intent.putExtra("url", fragment.getWebView().getUrl());
-				startActivity(intent);
+				 Intent intent = new Intent(Intent.ACTION_INSERT,android.provider.Browser.BOOKMARKS_URI);
+				 intent.putExtra("title", fragment.getWebView().getTitle());
+				 intent.putExtra("url", fragment.getWebView().getUrl());
+				 startActivity(intent);
 				break;
 			case R.id.next :
 				if (historySaver.canGoNext()) {
